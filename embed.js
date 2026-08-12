@@ -94,12 +94,32 @@
   }
 
   var theme = getAttr('data-theme', 'PerkLedgerTheme');
-  var modalRadius = getAttr('data-modal-radius', 'PerkLedgerModalRadius');
-  var modalBorderColor = getAttr('data-modal-border-color', 'PerkLedgerModalBorderColor');
-  var modalBorderWidth = getAttr('data-modal-border-width', 'PerkLedgerModalBorderWidth');
-  var backdropColor = getAttr('data-backdrop-color', 'PerkLedgerBackdropColor');
-  var backdropOpacity = getAttr('data-backdrop-opacity', 'PerkLedgerBackdropOpacity');
-  var backdropBlur = getAttr('data-backdrop-blur', 'PerkLedgerBackdropBlur');
+  // Branding & Layout Parameters (The new standard)
+  var themeBg = getAttr('data-theme-bg', 'PerkLedgerThemeBg') || '#0F172A';
+  var themeSurface = getAttr('data-theme-surface', 'PerkLedgerThemeSurface') || '#1E293B';
+  var themeText = getAttr('data-theme-text', 'PerkLedgerThemeText') || '#FFFFFF';
+  var themeAccent = getAttr('data-theme-accent', 'PerkLedgerThemeAccent') || '#FCBD0B';
+  var fontSize = getAttr('data-font-size', 'PerkLedgerFontSize');
+  var inlineWidth = getAttr('data-inline-width', 'PerkLedgerInlineWidth') || '100%';
+
+  // Smart Fallbacks for older specific parameters
+  var modalBorderColor = getAttr('data-modal-border-color', 'PerkLedgerModalBorderColor') || hexToRgba(themeAccent, '0.4');
+  var modalBorderWidth = getAttr('data-modal-border-width', 'PerkLedgerModalBorderWidth') || '1px';
+  var backdropColor = getAttr('data-backdrop-color', 'PerkLedgerBackdropColor') || '#000000';
+  var backdropOpacity = getAttr('data-backdrop-opacity', 'PerkLedgerBackdropOpacity') || '0.65';
+  var backdropBlur = getAttr('data-backdrop-blur', 'PerkLedgerBackdropBlur') || '8px';
+
+  var launcherBg = getAttr('data-launcher-bg', 'PerkLedgerLauncherBg') || themeSurface;
+  var launcherTextColor = getAttr('data-launcher-text-color', 'PerkLedgerLauncherTextColor') || themeText;
+  var launcherIconColor = getAttr('data-launcher-icon-color', 'PerkLedgerLauncherIconColor') || themeAccent;
+  var launcherBorderColor = getAttr('data-launcher-border-color', 'PerkLedgerLauncherBorderColor') || hexToRgba(themeAccent, '0.5');
+  var launcherBorderWidth = getAttr('data-launcher-border-width', 'PerkLedgerLauncherBorderWidth') || '1px';
+  var launcherIcon = getAttr('data-launcher-icon', 'PerkLedgerLauncherIcon');
+  var launcherRadius = getAttr('data-launcher-radius', 'PerkLedgerLauncherRadius') || 'pill';
+  var position = getAttr('data-position', 'PerkLedgerPosition') || 'bottom-right';
+
+  var hashTriggerEnabled = getAttr('data-hash-trigger', 'PerkLedgerHashTrigger') === 'yes' || getAttr('data-hash-trigger', 'PerkLedgerHashTrigger') === '1';
+  var customHashName = getAttr('data-hash-name', 'PerkLedgerHashName') || 'reward';
 
   var rawLauncher = getAttr('data-launcher', 'PerkLedgerLauncher');
   // STRICT RULE: Floating launcher MUST ONLY appear if explicitly set to 'yes', 'true', or '1'
@@ -107,17 +127,7 @@
   var launcherStyle = getAttr('data-launcher-style', 'PerkLedgerLauncherStyle');
   var launcherText = getAttr('data-launcher-text', 'PerkLedgerLauncherText');
   var launcherHideText = getAttr('data-launcher-hide-text', 'PerkLedgerLauncherHideText') === 'yes' || getAttr('data-launcher-hide-text', 'PerkLedgerLauncherHideText') === '1';
-  var launcherBg = getAttr('data-launcher-bg', 'PerkLedgerLauncherBg');
-  var launcherTextColor = getAttr('data-launcher-text-color', 'PerkLedgerLauncherTextColor');
-  var launcherIconColor = getAttr('data-launcher-icon-color', 'PerkLedgerLauncherIconColor');
-  var launcherBorderColor = getAttr('data-launcher-border-color', 'PerkLedgerLauncherBorderColor');
-  var launcherBorderWidth = getAttr('data-launcher-border-width', 'PerkLedgerLauncherBorderWidth');
-  var launcherIcon = getAttr('data-launcher-icon', 'PerkLedgerLauncherIcon');
-  var launcherRadius = getAttr('data-launcher-radius', 'PerkLedgerLauncherRadius') || 'pill';
-  var position = getAttr('data-position', 'PerkLedgerPosition') || 'bottom-right';
-
-  var hashTriggerEnabled = getAttr('data-hash-trigger', 'PerkLedgerHashTrigger') === 'yes' || getAttr('data-hash-trigger', 'PerkLedgerHashTrigger') === '1';
-  var customHashName = getAttr('data-hash-name', 'PerkLedgerHashName') || 'reward';
+  var modalRadius = getAttr('data-modal-radius', 'PerkLedgerModalRadius');
 
   // Derive dynamic modal corner radius
   var radiusPx = '24px';
@@ -149,9 +159,12 @@
 
   // Target pass URL strictly uses official authorized domain pass.perkledger.com
   var passUrl = 'https://pass.perkledger.com/?m=' + encodeURIComponent(merchantId) + '&embed=true';
-  if (theme) {
-      passUrl += '&theme=' + encodeURIComponent(theme);
-  }
+  if (theme) passUrl += '&theme=' + encodeURIComponent(theme);
+  if (themeBg) passUrl += '&t_bg=' + encodeURIComponent(themeBg);
+  if (themeSurface) passUrl += '&t_sfc=' + encodeURIComponent(themeSurface);
+  if (themeText) passUrl += '&t_txt=' + encodeURIComponent(themeText);
+  if (themeAccent) passUrl += '&t_acc=' + encodeURIComponent(themeAccent);
+  if (fontSize) passUrl += '&fs=' + encodeURIComponent(fontSize);
 
   // Dynamic Material SVG Icons (Clean vector SVGs)
   var MATERIAL_ICONS_SVG = {
@@ -338,11 +351,10 @@
   `;
   document.head.appendChild(style);
 
-  // Check if inline target element exists on page (Smart Auto-Suppression)
   var inlineTarget = document.getElementById('perkledger-widget') || document.querySelector('[data-perkledger-pass]');
   if (inlineTarget) {
-    // Style inline container to be a sleek 440px centered native mobile pass card
-    inlineTarget.style.maxWidth = '440px';
+    // Style inline container
+    inlineTarget.style.maxWidth = inlineWidth;
     inlineTarget.style.margin = '30px auto';
     inlineTarget.style.width = '100%';
     inlineTarget.style.minHeight = '740px';

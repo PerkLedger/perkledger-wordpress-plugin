@@ -43,24 +43,23 @@ class PerkLedgerRewardsPlugin {
         register_setting('perkledger_settings_group', 'perkledger_hash_name');
 
         register_setting('perkledger_settings_group', 'perkledger_modal_radius');
-        register_setting('perkledger_settings_group', 'perkledger_modal_border_color');
         register_setting('perkledger_settings_group', 'perkledger_modal_border_width');
-        register_setting('perkledger_settings_group', 'perkledger_backdrop_color');
-        register_setting('perkledger_settings_group', 'perkledger_backdrop_opacity');
-        register_setting('perkledger_settings_group', 'perkledger_backdrop_blur');
 
         register_setting('perkledger_settings_group', 'perkledger_launcher_enabled');
         register_setting('perkledger_settings_group', 'perkledger_launcher_style');
         register_setting('perkledger_settings_group', 'perkledger_launcher_text');
         register_setting('perkledger_settings_group', 'perkledger_launcher_hide_text');
-        register_setting('perkledger_settings_group', 'perkledger_launcher_bg_color');
-        register_setting('perkledger_settings_group', 'perkledger_launcher_text_color');
-        register_setting('perkledger_settings_group', 'perkledger_launcher_icon_color');
-        register_setting('perkledger_settings_group', 'perkledger_launcher_border_color');
-        register_setting('perkledger_settings_group', 'perkledger_launcher_border_width');
         register_setting('perkledger_settings_group', 'perkledger_launcher_icon');
         register_setting('perkledger_settings_group', 'perkledger_launcher_radius');
         register_setting('perkledger_settings_group', 'perkledger_launcher_position');
+
+        // New Branding & Layout Parameters
+        register_setting('perkledger_settings_group', 'perkledger_theme_bg');
+        register_setting('perkledger_settings_group', 'perkledger_theme_surface');
+        register_setting('perkledger_settings_group', 'perkledger_theme_text');
+        register_setting('perkledger_settings_group', 'perkledger_theme_accent');
+        register_setting('perkledger_settings_group', 'perkledger_font_size');
+        register_setting('perkledger_settings_group', 'perkledger_inline_width');
     }
 
     public function render_settings_page() {
@@ -71,24 +70,23 @@ class PerkLedgerRewardsPlugin {
         $hash_name = esc_attr(get_option('perkledger_hash_name', 'reward'));
 
         $modal_radius = get_option('perkledger_modal_radius', 'rounded');
-        $modal_border_color = esc_attr(get_option('perkledger_modal_border_color', '#A68958'));
-        $modal_border_width = esc_attr(get_option('perkledger_modal_border_width', '1px'));
-        $backdrop_color = esc_attr(get_option('perkledger_backdrop_color', '#000000'));
-        $backdrop_opacity = esc_attr(get_option('perkledger_backdrop_opacity', '0.65'));
-        $backdrop_blur = esc_attr(get_option('perkledger_backdrop_blur', '8px'));
+        $modal_border_width = get_option('perkledger_modal_border_width', '1px');
 
         $launcher_enabled = get_option('perkledger_launcher_enabled', '1');
         $launcher_style = get_option('perkledger_launcher_style', 'with-label');
         $launcher_text = esc_attr(get_option('perkledger_launcher_text', 'Rewards Pass'));
         $launcher_hide_text = get_option('perkledger_launcher_hide_text', '0');
-        $launcher_bg = esc_attr(get_option('perkledger_launcher_bg_color', '#7C2A2A'));
-        $launcher_text_color = esc_attr(get_option('perkledger_launcher_text_color', '#FFFFFF'));
-        $launcher_icon_color = esc_attr(get_option('perkledger_launcher_icon_color', '#FCBD0B'));
-        $launcher_border_color = esc_attr(get_option('perkledger_launcher_border_color', '#A68958'));
-        $launcher_border_width = esc_attr(get_option('perkledger_launcher_border_width', '1px'));
         $launcher_icon = get_option('perkledger_launcher_icon', 'card_membership');
         $launcher_radius = get_option('perkledger_launcher_radius', 'pill');
         $launcher_position = get_option('perkledger_launcher_position', 'bottom-right');
+
+        // Core Branding & Layout
+        $theme_bg = esc_attr(get_option('perkledger_theme_bg', '#0F172A'));
+        $theme_surface = esc_attr(get_option('perkledger_theme_surface', '#1E293B'));
+        $theme_text = esc_attr(get_option('perkledger_theme_text', '#FFFFFF'));
+        $theme_accent = esc_attr(get_option('perkledger_theme_accent', '#FCBD0B'));
+        $font_size = esc_attr(get_option('perkledger_font_size', 'medium'));
+        $inline_width = esc_attr(get_option('perkledger_inline_width', '100%'));
 
         // Fetch published WordPress pages for dropdown selector
         $wp_pages = get_pages(array('post_status' => 'publish'));
@@ -271,9 +269,60 @@ class PerkLedgerRewardsPlugin {
                                 </div>
                             </div>
 
-                            <!-- Step 2: Integration Method Selector -->
+                            <!-- New Step: Branding Settings -->
                             <div class="pl-group-header">
                                 <span class="pl-group-badge">2</span>
+                                <span>Core Branding & Layout (Zero-Flicker Injection)</span>
+                            </div>
+
+                            <div class="pl-section-box">
+                                <div class="pl-wp-field">
+                                    <label class="pl-wp-label">Background Color</label>
+                                    <div class="pl-wp-color-box">
+                                        <input type="color" name="perkledger_theme_bg" value="<?php echo $theme_bg; ?>" class="pl-wp-color-picker" />
+                                        <input type="text" value="<?php echo $theme_bg; ?>" class="pl-wp-input pl-wp-color-text" readonly />
+                                    </div>
+                                </div>
+                                <div class="pl-wp-field">
+                                    <label class="pl-wp-label">Surface Color</label>
+                                    <div class="pl-wp-color-box">
+                                        <input type="color" name="perkledger_theme_surface" value="<?php echo $theme_surface; ?>" class="pl-wp-color-picker" />
+                                        <input type="text" value="<?php echo $theme_surface; ?>" class="pl-wp-input pl-wp-color-text" readonly />
+                                    </div>
+                                </div>
+                                <div class="pl-wp-field">
+                                    <label class="pl-wp-label">Text Color</label>
+                                    <div class="pl-wp-color-box">
+                                        <input type="color" name="perkledger_theme_text" value="<?php echo $theme_text; ?>" class="pl-wp-color-picker" />
+                                        <input type="text" value="<?php echo $theme_text; ?>" class="pl-wp-input pl-wp-color-text" readonly />
+                                    </div>
+                                </div>
+                                <div class="pl-wp-field">
+                                    <label class="pl-wp-label">Accent Color</label>
+                                    <div class="pl-wp-color-box">
+                                        <input type="color" name="perkledger_theme_accent" value="<?php echo $theme_accent; ?>" class="pl-wp-color-picker" />
+                                        <input type="text" value="<?php echo $theme_accent; ?>" class="pl-wp-input pl-wp-color-text" readonly />
+                                    </div>
+                                </div>
+                                <div class="pl-wp-field">
+                                    <label class="pl-wp-label">Base Font Size</label>
+                                    <select name="perkledger_font_size" class="pl-wp-select">
+                                        <option value="small" <?php selected($font_size, 'small'); ?>>Small</option>
+                                        <option value="medium" <?php selected($font_size, 'medium'); ?>>Medium</option>
+                                        <option value="large" <?php selected($font_size, 'large'); ?>>Large</option>
+                                    </select>
+                                    <div class="pl-wp-help">Select the base font size for the Pass.</div>
+                                </div>
+                                <div class="pl-wp-field">
+                                    <label class="pl-wp-label">Embedded Widget Max Width</label>
+                                    <input type="text" name="perkledger_inline_width" value="<?php echo $inline_width; ?>" class="pl-wp-input" placeholder="100%" />
+                                    <div class="pl-wp-help">Controls the maximum width of the embedded pass (e.g., "100%" or "900px"). Setting this wider allows the responsive 2-column layout to trigger.</div>
+                                </div>
+                            </div>
+
+                            <!-- Step 3: Integration Method Selector -->
+                            <div class="pl-group-header">
+                                <span class="pl-group-badge">3</span>
                                 <span>Select Integration Method</span>
                             </div>
 
@@ -311,7 +360,7 @@ class PerkLedgerRewardsPlugin {
                             <!-- Dedicated Embedded Page Settings -->
                             <div id="section-embedded-settings" class="pl-section-box">
                                 <div class="pl-group-header">
-                                    <span class="pl-group-badge" id="badge-embedded-num">3</span>
+                                    <span class="pl-group-badge" id="badge-embedded-num">4</span>
                                     <span>Select Your Dedicated WordPress Page</span>
                                 </div>
 
@@ -357,7 +406,7 @@ class PerkLedgerRewardsPlugin {
                             <!-- Floating Launcher Settings -->
                             <div id="section-floating-settings" class="pl-section-box">
                                 <div class="pl-group-header">
-                                    <span class="pl-group-badge" id="badge-floating-num">4</span>
+                                    <span class="pl-group-badge" id="badge-floating-num">5</span>
                                     <span>Floating Launcher & URL Hash Trigger Settings</span>
                                 </div>
 
@@ -620,38 +669,6 @@ class PerkLedgerRewardsPlugin {
                                     </div>
                                 </div>
 
-                                <div class="pl-wp-field">
-                                    <label class="pl-wp-label">Custom Launcher Colors (Merchant Brand)</label>
-                                    <div style="display: flex; flex-wrap: wrap; gap: 16px;">
-                                        <div>
-                                            <span style="display: block; font-size: 11px; color: #64748B; margin-bottom: 4px;">Background Color</span>
-                                            <div class="pl-wp-color-box">
-                                                <input type="color" id="pl-color-bg-picker" value="<?php echo $launcher_bg; ?>" oninput="this.nextElementSibling.value = this.value; renderLiveSidebar();" class="pl-wp-color-picker" />
-                                                <input type="text" id="pl-color-bg-text" name="perkledger_launcher_bg_color" value="<?php echo $launcher_bg; ?>" class="pl-wp-input pl-wp-color-text" oninput="renderLiveSidebar()" />
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <span style="display: block; font-size: 11px; color: #64748B; margin-bottom: 4px;">Text Color</span>
-                                            <div class="pl-wp-color-box">
-                                                <input type="color" id="pl-color-text-picker" value="<?php echo $launcher_text_color; ?>" oninput="this.nextElementSibling.value = this.value; renderLiveSidebar();" class="pl-wp-color-picker" />
-                                                <input type="text" id="pl-color-text-input" name="perkledger_launcher_text_color" value="<?php echo $launcher_text_color; ?>" class="pl-wp-input pl-wp-color-text" oninput="renderLiveSidebar()" />
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <span style="display: block; font-size: 11px; color: #64748B; margin-bottom: 4px;">Icon Color</span>
-                                            <div class="pl-wp-color-box">
-                                                <input type="color" id="pl-color-icon-picker" value="<?php echo $launcher_icon_color; ?>" oninput="this.nextElementSibling.value = this.value; renderLiveSidebar();" class="pl-wp-color-picker" />
-                                                <input type="text" id="pl-color-icon-input" name="perkledger_launcher_icon_color" value="<?php echo $launcher_icon_color; ?>" class="pl-wp-input pl-wp-color-text" oninput="renderLiveSidebar()" />
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <span style="display: block; font-size: 11px; color: #64748B; margin-bottom: 4px;">Border Color</span>
-                                            <div class="pl-wp-color-box">
-                                                <input type="color" id="pl-color-border-picker" value="<?php echo $launcher_border_color; ?>" oninput="this.nextElementSibling.value = this.value; renderLiveSidebar();" class="pl-wp-color-picker" />
-                                                <input type="text" id="pl-color-border-input" name="perkledger_launcher_border_color" value="<?php echo $launcher_border_color; ?>" class="pl-wp-input pl-wp-color-text" oninput="renderLiveSidebar()" />
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
 
@@ -729,44 +746,6 @@ class PerkLedgerRewardsPlugin {
                                     </div>
                                 </div>
 
-                                <div class="pl-wp-field">
-                                    <label class="pl-wp-label">Modal Drawer Border Color</label>
-                                    <div class="pl-wp-color-box">
-                                        <input type="color" id="pl-color-modalborder-picker" value="<?php echo $modal_border_color; ?>" oninput="this.nextElementSibling.value = this.value; renderLiveSidebar();" class="pl-wp-color-picker" />
-                                        <input type="text" id="pl-color-modalborder-input" name="perkledger_modal_border_color" value="<?php echo $modal_border_color; ?>" class="pl-wp-input pl-wp-color-text" oninput="renderLiveSidebar()" />
-                                    </div>
-                                </div>
-
-                                <div class="pl-wp-field">
-                                    <label class="pl-wp-label">Backdrop Overlay Dimming & Transparency</label>
-                                    <div style="display: flex; flex-wrap: wrap; gap: 16px;">
-                                        <div>
-                                            <span style="display: block; font-size: 11px; color: #64748B; margin-bottom: 4px;">Backdrop Tint Color</span>
-                                            <div class="pl-wp-color-box">
-                                                <input type="color" value="<?php echo $backdrop_color; ?>" oninput="this.nextElementSibling.value = this.value" class="pl-wp-color-picker" />
-                                                <input type="text" name="perkledger_backdrop_color" value="<?php echo $backdrop_color; ?>" class="pl-wp-input pl-wp-color-text" />
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <span style="display: block; font-size: 11px; color: #64748B; margin-bottom: 4px;">Backdrop Darkness / Opacity</span>
-                                            <select name="perkledger_backdrop_opacity" class="pl-wp-select" style="width: 170px !important;">
-                                                <option value="0.65" <?php selected($backdrop_opacity, '0.65'); ?>>65% Dimming (Standard)</option>
-                                                <option value="0.80" <?php selected($backdrop_opacity, '0.80'); ?>>80% Dimming (Dark)</option>
-                                                <option value="0.40" <?php selected($backdrop_opacity, '0.40'); ?>>40% Dimming (Light)</option>
-                                                <option value="0.20" <?php selected($backdrop_opacity, '0.20'); ?>>20% Dimming (Ultra Light)</option>
-                                                <option value="0.00" <?php selected($backdrop_opacity, '0.00'); ?>>0% (Clear / Transparent)</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <span style="display: block; font-size: 11px; color: #64748B; margin-bottom: 4px;">Backdrop Blur Strength</span>
-                                            <select name="perkledger_backdrop_blur" class="pl-wp-select" style="width: 140px !important;">
-                                                <option value="8px" <?php selected($backdrop_blur, '8px'); ?>>8px (Default)</option>
-                                                <option value="12px" <?php selected($backdrop_blur, '12px'); ?>>12px (Strong)</option>
-                                                <option value="4px" <?php selected($backdrop_blur, '4px'); ?>>4px (Subtle)</option>
-                                                <option value="0px" <?php selected($backdrop_blur, '0px'); ?>>0px (Disabled)</option>
-                                            </select>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
 
@@ -1049,11 +1028,7 @@ class PerkLedgerRewardsPlugin {
 
         $mode = get_option('perkledger_integration_mode', 'hybrid');
         $modal_radius = esc_attr(get_option('perkledger_modal_radius', 'rounded'));
-        $modal_border_color = esc_attr(get_option('perkledger_modal_border_color', '#A68958'));
         $modal_border_width = esc_attr(get_option('perkledger_modal_border_width', '1px'));
-        $backdrop_color = esc_attr(get_option('perkledger_backdrop_color', '#000000'));
-        $backdrop_opacity = esc_attr(get_option('perkledger_backdrop_opacity', '0.65'));
-        $backdrop_blur = esc_attr(get_option('perkledger_backdrop_blur', '8px'));
 
         $launcher_opt = get_option('perkledger_launcher_enabled', '1');
         $launcher = ($mode === 'embedded' || $launcher_opt === '0' || $launcher_opt === 0 || $launcher_opt === 'no') ? 'no' : 'yes';
@@ -1061,11 +1036,6 @@ class PerkLedgerRewardsPlugin {
         $style = esc_attr(get_option('perkledger_launcher_style', 'with-label'));
         $text = esc_attr(get_option('perkledger_launcher_text', 'Rewards Pass'));
         $hide_text = get_option('perkledger_launcher_hide_text', '0') === '1' ? 'yes' : 'no';
-        $bg_color = esc_attr(get_option('perkledger_launcher_bg_color', '#7C2A2A'));
-        $text_color = esc_attr(get_option('perkledger_launcher_text_color', '#FFFFFF'));
-        $icon_color = esc_attr(get_option('perkledger_launcher_icon_color', '#FCBD0B'));
-        $border_color = esc_attr(get_option('perkledger_launcher_border_color', '#A68958'));
-        $border_width = esc_attr(get_option('perkledger_launcher_border_width', '1px'));
         $icon = esc_attr(get_option('perkledger_launcher_icon', 'card_membership'));
         $launcher_radius = esc_attr(get_option('perkledger_launcher_radius', 'pill'));
         $position = esc_attr(get_option('perkledger_launcher_position', 'bottom-right'));
@@ -1073,21 +1043,29 @@ class PerkLedgerRewardsPlugin {
         $hash_enabled = get_option('perkledger_hash_trigger_enabled', '1') === '1' ? 'yes' : 'no';
         $hash_name = esc_attr(get_option('perkledger_hash_name', 'reward'));
 
+        $theme_bg = esc_attr(get_option('perkledger_theme_bg', '#0F172A'));
+        $theme_surface = esc_attr(get_option('perkledger_theme_surface', '#1E293B'));
+        $theme_text = esc_attr(get_option('perkledger_theme_text', '#FFFFFF'));
+        $theme_accent = esc_attr(get_option('perkledger_theme_accent', '#FCBD0B'));
+        $font_size = esc_attr(get_option('perkledger_font_size', 'medium'));
+        $inline_width = esc_attr(get_option('perkledger_inline_width', '100%'));
+
         printf(
-            '<script src="https://pass.perkledger.com/assets/embed.js?v=%s" data-merchant="%s" data-modal-radius="%s" data-modal-border-color="%s" data-modal-border-width="%s" data-backdrop-color="%s" data-backdrop-opacity="%s" data-backdrop-blur="%s" data-launcher="%s" data-launcher-style="%s" data-launcher-text="%s" data-launcher-hide-text="%s" data-launcher-bg="%s" data-launcher-text-color="%s" data-launcher-icon-color="%s" data-launcher-border-color="%s" data-launcher-border-width="%s" data-launcher-icon="%s" data-launcher-radius="%s" data-position="%s" data-hash-trigger="%s" data-hash-name="%s" async></script>' . "\n",
+            '<script src="https://pass.perkledger.com/assets/embed.js?v=%s" data-merchant="%s" data-modal-radius="%s" data-modal-border-width="%s" data-launcher="%s" data-launcher-style="%s" data-launcher-text="%s" data-launcher-hide-text="%s" data-launcher-icon="%s" data-launcher-radius="%s" data-position="%s" data-hash-trigger="%s" data-hash-name="%s" data-theme-bg="%s" data-theme-surface="%s" data-theme-text="%s" data-theme-accent="%s" data-font-size="%s" data-inline-width="%s" async></script>' . "\n",
             PERKLEDGER_WP_BUILD,
-            $merchant, $modal_radius, $modal_border_color, $modal_border_width,
-            $backdrop_color, $backdrop_opacity, $backdrop_blur,
-            $launcher, $style, $text, $hide_text, $bg_color, $text_color, $icon_color,
-            $border_color, $border_width, $icon, $launcher_radius, $position,
-            $hash_enabled, $hash_name
+            $merchant, $modal_radius, $modal_border_width,
+            $launcher, $style, $text, $hide_text,
+            $icon, $launcher_radius, $position,
+            $hash_enabled, $hash_name,
+            $theme_bg, $theme_surface, $theme_text, $theme_accent, $font_size, $inline_width
         );
     }
 
     public function render_shortcode($atts) {
         $merchant = get_option('perkledger_merchant_id', '');
         if (!$merchant) return '';
-        return '<div id="perkledger-widget" data-merchant="' . esc_attr($merchant) . '" style="max-width: 440px; margin: 30px auto; width: 100%; min-height: 720px; border-radius: 24px; overflow: hidden; box-shadow: 0 12px 40px rgba(0,0,0,0.12); display: block;"></div>';
+        $inline_width = esc_attr(get_option('perkledger_inline_width', '100%'));
+        return '<div id="perkledger-widget" data-merchant="' . esc_attr($merchant) . '" style="max-width: ' . $inline_width . '; margin: 30px auto; width: 100%; min-height: 720px; border-radius: 24px; overflow: hidden; box-shadow: 0 12px 40px rgba(0,0,0,0.12); display: block;"></div>';
     }
 }
 
